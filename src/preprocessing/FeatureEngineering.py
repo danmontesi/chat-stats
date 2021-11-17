@@ -8,7 +8,12 @@ pd.set_option('display.max_rows', 500)
 if __name__ == "__main__":
     df = pd.read_csv(DATASET_PATH + "dataset.csv")
 
+    # Change format
     df['date_time'] = pd.to_datetime(df['date'] + ' ' + df['time'])
+    df['date'] = pd.to_datetime(df['date'], format="%d/%m/%y")
+
+    # Add 'hour' column
+    df['hour'] = df['time'].str[:2]
 
     # Add first_message column
     df['first_message'] = False
@@ -23,7 +28,10 @@ if __name__ == "__main__":
     first_message_idx = df[df['time'] >= '05:00:00'].sort_values("date_time").drop_duplicates(subset=['date'], keep='first').index
     df.loc[first_message_idx, "first_message"] = True
 
-    df.to_csv('../dataset/tmp.csv', index=True)
+    df['week_day'] = df['date'].dt.weekday
+    print(df)
+
+    df.to_csv('../dataset/tmp.csv', index=False)
 
 
 
