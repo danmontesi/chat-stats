@@ -31,10 +31,10 @@ if __name__ == "__main__":
     df['week_day'] = df['date_time'].dt.weekday
 
     # Add month/year feature
-    df['month_year'] = [str(x)[:7] for x in df['date_time']]
+    df['year_month'] = [str(x)[:7] for x in df['date_time']]
 
-    list_ordered_columns = ['date_time', 'date', 'month_year', 'time', 'hour', 'time_difference', 'first_message', 'sender', 'message']
+    list_ordered_columns = ['date_time', 'date', 'year_month', 'time', 'hour', 'time_difference', 'first_message', 'sender', 'message']
     df = df[list_ordered_columns]
-    df.columns = ['date_time', 'date', 'month_year', 'time', 'hour', 'seconds_from_previous_message', 'is_first_message_of_day', 'sender', 'message']
+    df.columns = ['date_time', 'date', 'year_month', 'time', 'hour', 'seconds_from_previous_message', 'is_first_message_of_day', 'sender', 'message']
 
     df.to_csv('../dataset/final_dataset.csv', index=False)
