@@ -13,7 +13,7 @@ def chat_to_df(txt_dir, div_char=']'):
         for line in f:
             if line[0] != '[':
                 continue
-            date.append(line.split(",")[0].strip('['))
+            date.append(line.split(",")[0].strip('[').strip(" "))
             time.append(line.split(div_char)[0].split(",")[1].strip(" "))
             sender.append(line.split(div_char)[1].split(":")[0].strip(" "))
             message.append(line.split(":")[-1].strip('\n').strip(" "))
