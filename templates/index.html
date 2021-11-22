@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+ <body>
+  <h1>Hello Plotly (but not Dash)</h1>
+  <div id='chart' class='chart'”></div>
+</body>
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  Plotly.newPlot('chart',{{graphJSON[0] | safe}},{});
+  Plotly.newPlot('chart',{{graphJSON[1] | safe}},{});
+  Plotly.newPlot('chart',{{graphJSON[2] | safe}},{});
+</script>
+</html>
