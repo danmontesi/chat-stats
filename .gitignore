@@ -2,3 +2,4 @@
 .idea/**
 venv/**
 .idea.xml
+.DS_Store
