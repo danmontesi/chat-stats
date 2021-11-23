@@ -1,2 +1,5 @@
 /src/dataset/**
-/.idea/**
+.idea/**
+venv/**
+.idea.xml
+.DS_Store
