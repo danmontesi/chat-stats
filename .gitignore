@@ -1,4 +1,4 @@
 /src/dataset/**
 .idea/**
-./venv/**
+venv/**
 .idea.xml
