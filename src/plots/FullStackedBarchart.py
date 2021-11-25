@@ -54,14 +54,14 @@ class FullStackedBarchart(ABC):
         values_list = df_sender_1[self.value_column].tolist()
         list_bars.append(
             go.Bar(name=list_hue_names[0], x=df_sender_1[self.categorical_column].tolist(), y=values_list,
-                   text=values_list, marker_color='#007681',
+                   text=values_list, marker_color='#FF69B4',
                    **bar_args)
         )
 
         values_list = df_sender_2[self.value_column].tolist()
         list_bars.append(
             go.Bar(name=list_hue_names[1], x=df_sender_2[self.categorical_column].tolist(), y=values_list,
-                   text=values_list, marker_color='#0097a7',
+                   text=values_list, marker_color='#6495ED',
                    **bar_args)
         )
 
