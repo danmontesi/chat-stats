@@ -9,7 +9,7 @@ if __name__ == "__main__":
     df = pd.read_csv(DATASET_PATH + "dataset.csv")
 
     # Change format
-    df['date_time'] = pd.to_datetime(df['date'] + ' ' + df['time'])
+    df['date_time'] = pd.to_datetime(df['date'] + ' ' + df['time'], errors = 'coerce')
 
     df['date'] = [str(x)[:10] for x in df['date_time']]
 

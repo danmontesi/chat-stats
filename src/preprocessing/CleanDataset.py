@@ -87,7 +87,7 @@ def chat_to_df(txt_dir, div_char=']'):
 
 if __name__ == "__main__":
 
-    file_dir = DATASET_PATH + 'flora.txt'
-    df = chat_to_df(file_dir, div_char='-')
+    file_dir = DATASET_PATH + 'chat_nast_dan.txt'
+    df = chat_to_df(file_dir)
     df.to_csv('../dataset/dataset.csv', index=False)
     df_new = pd.read_csv('../dataset/dataset.csv')
