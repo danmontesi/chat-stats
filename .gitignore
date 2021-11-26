@@ -1,5 +1,6 @@
 /src/dataset/**
 .idea/**
-venv/**
+env/**
 .idea.xml
 .DS_Store
+**.pyc
