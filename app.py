@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def dashboard():
+
    df = pd.read_csv("src/dataset/final_dataset.csv")
 
    f_message_count         = Graphs.message_count(df, 'month')
