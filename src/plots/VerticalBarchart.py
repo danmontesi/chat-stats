@@ -15,7 +15,7 @@ from src.preprocessing.CleanDataset import DATASET_PATH
 sns.set_style('darkgrid')
 
 
-class FullStackedBarchart(ABC):
+class HorizontalBarchart(ABC):
     def __init__(self, df, value_column, categorical_column, hue_column):
         """
         Given a dataframe, their categorical column, hue column and value column,
@@ -82,20 +82,9 @@ class FullStackedBarchart(ABC):
 if __name__ == "__main__":
     df = pd.read_csv(DATASET_PATH + 'final_dataset.csv')
 
-    df_grouped = df.groupby(['year_month', 'sender']).agg({'message': len}).reset_index()
+    # Aggregate data from external functions
+    #aggregated_df = # funzione dal file aggregate_functions
 
-    df_temp = df.groupby('year_month').agg({'message': len}).reset_index()
-    df_temp.columns = ['year_month', 'total_messages']
+    #plot = HorizontalBarchart(aggregated_df, 'sender_percentage_messages', 'year_month', 'sender')
+    #plot.plot()
 
-    df_grouped.columns = ['year_month', 'sender', 'sender_messages']
-
-    df_grouped = pd.merge(df_temp, df_grouped, how='inner', on='year_month')
-    df_grouped['sender_percentage_messages'] = round(100 * df_grouped.sender_messages / df_grouped.total_messages, 1)
-
-    df_grouped = df_grouped.sort_values('year_month')
-
-    # Filter by months
-    df_grouped = df_grouped[df_grouped.year_month <= '2016-12']
-
-    plot = FullStackedBarchart(df_grouped, 'sender_percentage_messages', 'year_month', 'sender')
-    plot.plot()

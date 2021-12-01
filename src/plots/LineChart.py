@@ -39,7 +39,7 @@ class LineChart(ABC):
         self.text_column = text_column
 
     def plot(self):
-        fig = px.line(self.df, x=self.index_column, y=self.value_column, color=self.categorical_column, **bar_args)
+        fig = px.line(self.df, x=self.index_column, y=self.value_column, color=self.categorical_column)
         fig.show()
 
 
