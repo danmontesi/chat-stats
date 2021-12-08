@@ -1,11 +1,14 @@
 import pandas as pd
 from emoji import UNICODE_EMOJI
+import os
 
-
-pd.set_option('display.max_columns', 500)
-DATASET_PATH = '../dataset/'
+DATASET_PATH = os.getcwd() + '/src/dataset/'
 
 def chat_to_df(txt_dir, div_char=']'):
+
+    file_dir = DATASET_PATH + txt_dir
+    print(file_dir)
+
     date = []
     time = []
     sender = []
@@ -17,7 +20,7 @@ def chat_to_df(txt_dir, div_char=']'):
 
     if div_char == ']':
 
-        with open(txt_dir) as f:
+        with open(file_dir) as f:
             for i, line in enumerate(f):
 
 
@@ -35,9 +38,9 @@ def chat_to_df(txt_dir, div_char=']'):
                 message.append(line.split(": ")[1].strip('\n').strip(" "))
 
                 if line.split(": ")[1].strip('\n').strip(" ") == "":
-                    print("WARNING: The following line has null message:")
-                    print(f'{i}, {line},\nline[0]: {line[0]}')
-                    print(line.split(": ")[1].strip('\n').strip(" "))
+                    # print("WARNING: The following line has null message:")
+                    # print(f'{i}, {line},\nline[0]: {line[0]}')
+                    # print(line.split(": ")[1].strip('\n').strip(" "))
                     message[-1] = " "
 
 
@@ -49,11 +52,10 @@ def chat_to_df(txt_dir, div_char=']'):
              'message': message
             })
 
-        return df
 
     elif div_char == '-':
 
-        with open(txt_dir) as f:
+        with open(file_dir) as f:
             for i, line in enumerate(f):
 
                 # Remove forwarded messages
@@ -61,14 +63,13 @@ def chat_to_df(txt_dir, div_char=']'):
                     continue
 
                 if len(line) < 6 or (line[2] != '/' or line[5] != '/'):
-                    print(message[-1])
                     message[-1] = message[-1] + line.strip('\n')
                     continue
 
                 if '‎' in line:
                     continue
 
-                print(i)
+
                 date.append(line.split(",")[0].strip('[').strip(" "))
                 time.append(line.split(div_char)[0].split(",")[1].strip(" "))
                 sender.append(line.split(div_char)[1].split(":")[0].strip(" "))
@@ -81,13 +82,8 @@ def chat_to_df(txt_dir, div_char=']'):
              'message': message
              })
 
+    df.to_csv(DATASET_PATH + 'dataset.csv', index=False)
 
+    # True = no errors
+    return True
 
-        return df
-
-if __name__ == "__main__":
-
-    file_dir = DATASET_PATH + 'chat_nast_dan.txt'
-    df = chat_to_df(file_dir)
-    df.to_csv('../dataset/dataset.csv', index=False)
-    df_new = pd.read_csv('../dataset/dataset.csv')

@@ -1,11 +1,9 @@
 import pandas as pd
-from CleanDataset import DATASET_PATH
+from src.preprocessing.CleanDataset import DATASET_PATH
 import datetime
 
-pd.set_option('display.max_columns', 500)
-pd.set_option('display.max_rows', 500)
 
-if __name__ == "__main__":
+def preprocess_chat(debug=False):
     df = pd.read_csv(DATASET_PATH + "dataset.csv")
 
     # Change format
@@ -37,4 +35,6 @@ if __name__ == "__main__":
     df = df[list_ordered_columns]
     df.columns = ['date_time', 'date', 'year_month', 'time', 'hour', 'seconds_from_previous_message', 'is_first_message_of_day', 'sender', 'message']
 
-    df.to_csv('../dataset/final_dataset.csv', index=False)
+    if debug:
+        print("Saving dataset in final_dataset")
+    df.to_csv(DATASET_PATH + '/final_dataset.csv', index=False)

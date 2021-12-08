@@ -9,8 +9,9 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 from nltk.corpus import stopwords
-
+import nltk
 from src.preprocessing.CleanDataset import DATASET_PATH
+
 
 
 class WordCloudChat(ABC):
@@ -106,6 +107,7 @@ class WordCloudChat(ABC):
 
 if __name__ == "__main__":
     df = pd.read_csv(DATASET_PATH + 'final_dataset.csv')
+    nltk.download('stopwords')
     print(stopwords.words('italian'))
     wc = WordCloudChat(df, '2017-10-01', '2019-01-01', 'message', 'sender')
 

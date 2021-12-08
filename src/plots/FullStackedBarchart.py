@@ -96,7 +96,7 @@ if __name__ == "__main__":
 
     # Filter by months
 
-    df_grouped = df_grouped[df_grouped.year_month <= '2016-12']
+    #df_grouped = df_grouped[df_grouped.year_month <= '2016-12']
 
     plot = FullStackedBarchart(df_grouped, 'sender_percentage_messages', 'year_month', 'sender')
     plot.plot()

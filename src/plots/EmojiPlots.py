@@ -4,12 +4,19 @@ from emoji import UNICODE_EMOJI
 
 
 class CountEmojis():
-    def __init__(self, df, emojis_lst, by='month'):
+    def __init__(self, df, emojis='love', by='month'):
+
+
+        # emojis_lst = []
+        # [emojis_lst.append(x[0]) for x in list(UNICODE_EMOJI['en'])]
+        if emojis == 'love':
+            emojis_lst = ['❤', '🥰', '😍', '😘', '💕', '💙', '💜', '❣', '💚', '💞', '💖', '💛', \
+                           '🖤', '💗', '💌', '💓', '😻', '🧡', '💘', '💝', '😽', '‍💟', '‍❤', '️💏', \
+                           '🏩', '💒', '🤎', '🤍', '‍💒']
 
         self.df = df
         self.by = by
         self.df['emojis_count'] = 0
-
 
         for emoji in emojis_lst:
             self.df['emojis_count'] = self.df['emojis_count'] + self.df.message.str.count(emoji)
@@ -26,46 +33,28 @@ class CountEmojis():
             self.df = self.df.groupby(by=["sender"]).count()['emojis_count'].reset_index()
 
 
-
-
-
-
-    def plot(self):
-
-        fig = go.Figure()
-
+        self.fig = go.Figure()
 
         if self.by == 'month':
             for sender, sender_emojis in self.df.groupby('sender'):
-                fig.add_scatter(x=sender_emojis.year_month, y=sender_emojis.emojis_count, name=sender)
+                self.fig.add_scatter(x=sender_emojis.year_month, y=sender_emojis.emojis_count, name=sender)
 
         elif self.by == 'day':
             for sender, sender_emojis in self.df.groupby('sender'):
-                fig.add_scatter(x=sender_emojis.date, y=sender_emojis.emojis_count, name=sender)
+                self.fig.add_scatter(x=sender_emojis.date, y=sender_emojis.emojis_count, name=sender)
 
         elif self.by == 'all':
             for sender, sender_emojis in self.df.groupby('sender'):
-                fig.add_bar(x=sender_emojis.sender, y=sender_emojis.emojis_count, name=sender)
+                self.fig.add_bar(x=sender_emojis.sender, y=sender_emojis.emojis_count, name=sender)
 
-        fig.show()
 
 
 if __name__ == '__main__':
-
-    # Load love emojis
-    emojis_lst = []
-    [emojis_lst.append(x[0]) for x in list(UNICODE_EMOJI['en'])]
-    love_emojis = ['❤', '🥰', '😍', '😘', '💕', '💙', '💜', '❣', '💚', '💞', '💖', '💛',\
-                   '🖤', '💗', '💌', '💓', '😻','🧡', '💘', '💝', '😽', '‍💟', '‍❤', '️💏',\
-                   '🏩', '💒', '🤎', '🤍', '‍💒']
-
     df = pd.read_csv('../dataset/final_dataset.csv')
 
     fig = CountEmojis(df, love_emojis, by='month')
-    fig.plot()
-
+    fig.fig.show()
     fig = CountEmojis(df, love_emojis, by='day')
-    fig.plot()
-
-    fig = CountEmojis(df, love_emojis, by='all')
-    fig.plot()
+    fig.fig.show()
+    fig = CountEmojis(df, emojis='love', by='month')
+    fig.fig.show()

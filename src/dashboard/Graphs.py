@@ -115,6 +115,11 @@ def avg_words_per_message(df, by='day'):
 if __name__ == "__main__":
     df = pd.read_csv("../dataset/final_dataset.csv")
 
-    message_count(df, 'month')
-    word_count(df, 'month')
-    avg_words_per_message(df, 'month')
+    # fig = message_count(df, 'month')
+    # fig.show()
+
+    # fig = word_count(df, 'month')
+    # fig.show()
+
+    fig = avg_words_per_message(df, 'month')
+    fig.show()
