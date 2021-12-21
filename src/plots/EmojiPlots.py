@@ -2,9 +2,9 @@ import pandas as pd
 import plotly.graph_objs as go
 from emoji import UNICODE_EMOJI
 
-
+pd.set_option('display.max_columns', 500)
 class CountEmojis():
-    def __init__(self, df, emojis='love', by='month'):
+    def __init__(self, df, emojis='love'):
 
 
         # emojis_lst = []
@@ -15,46 +15,44 @@ class CountEmojis():
                            '🏩', '💒', '🤎', '🤍', '‍💒']
 
         self.df = df
-        self.by = by
         self.df['emojis_count'] = 0
+        multi_index = [df['date'], df['sender']]
 
         for emoji in emojis_lst:
+            # Emoji count per message
             self.df['emojis_count'] = self.df['emojis_count'] + self.df.message.str.count(emoji)
 
-        if self.by == 'month':
-            self.df = self.df.groupby(by=["year_month", "sender"]).count()['emojis_count'].reset_index()
-            self.group_by = "year_month"
+        # Emoji count per month
+        monthly_df = self.df.groupby(by=["year_month", "sender"])['emojis_count'].sum().reset_index()
+        self.df = pd.merge(df,
+                      monthly_df,
+                      how='left',
+                      left_on=['year_month', 'sender'],
+                      right_on=['year_month','sender'],
+                      suffixes=[None, '_monthly'])
 
-        elif self.by == 'day':
-            self.df = self.df.groupby(by=["date", "sender"]).count()['emojis_count'].reset_index()
-            self.group_by = "day"
+        # Emoji count per day
+        daily_df= self.df.groupby(by=["date", "sender"]).count()['emojis_count'].reset_index()
+        self.df = pd.merge(df,
+                      daily_df,
+                      how='left',
+                      left_on=['date', 'sender'],
+                      right_on=['date','sender'],
+                      suffixes=[None, '_daily'])
 
-        elif self.by == 'all':
-            self.df = self.df.groupby(by=["sender"]).count()['emojis_count'].reset_index()
+        # Emoji count for the whole period
+        all_emojis = self.df.groupby(by=["sender"]).count()['emojis_count'].reset_index()
+        self.df = pd.merge(df,
+                      all_emojis,
+                      how='left',
+                      left_on=['sender'],
+                      right_on=['sender'],
+                      suffixes=[None, '_all'])
 
-
-        self.fig = go.Figure()
-
-        if self.by == 'month':
-            for sender, sender_emojis in self.df.groupby('sender'):
-                self.fig.add_scatter(x=sender_emojis.year_month, y=sender_emojis.emojis_count, name=sender)
-
-        elif self.by == 'day':
-            for sender, sender_emojis in self.df.groupby('sender'):
-                self.fig.add_scatter(x=sender_emojis.date, y=sender_emojis.emojis_count, name=sender)
-
-        elif self.by == 'all':
-            for sender, sender_emojis in self.df.groupby('sender'):
-                self.fig.add_bar(x=sender_emojis.sender, y=sender_emojis.emojis_count, name=sender)
 
 
 
 if __name__ == '__main__':
     df = pd.read_csv('../dataset/final_dataset.csv')
 
-    fig = CountEmojis(df, love_emojis, by='month')
-    fig.fig.show()
-    fig = CountEmojis(df, love_emojis, by='day')
-    fig.fig.show()
-    fig = CountEmojis(df, emojis='love', by='month')
-    fig.fig.show()
+    fig = CountEmojis(df)
